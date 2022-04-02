@@ -14,3 +14,9 @@ C:\wpf_projects\webbro\webbro\obj\Debug\webbro.csproj.CoreCompileInputs.cache
 C:\wpf_projects\webbro\webbro\obj\Debug\webbro.exe
 C:\wpf_projects\webbro\webbro\obj\Debug\webbro.pdb
 C:\wpf_projects\webbro\webbro\obj\Debug\webbro.csproj.AssemblyReference.cache
+C:\wpf_projects\webbro\webbro\bin\Debug\MaterialDesignColors.dll
+C:\wpf_projects\webbro\webbro\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\wpf_projects\webbro\webbro\bin\Debug\MaterialDesignColors.pdb
+C:\wpf_projects\webbro\webbro\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\wpf_projects\webbro\webbro\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.csproj.CopyComplete

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:webbro"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="450"
@@ -32,108 +33,210 @@
         >
 
         </StackPanel>
-        <StackPanel
-            Background="Blue"
-            DockPanel.Dock="Right"    
-        >
-            <TabControl
-                Background="Transparent"
-                BorderThickness="0"
+        <ScrollViewer>
+            <StackPanel
+                Background="Blue"
+                DockPanel.Dock="Right"    
             >
-                <TabItem
-                    Visibility="Collapsed"    
+                <TabControl
+                    Background="Transparent"
+                    BorderThickness="0"
                 >
-                    <StackPanel>
-                        <StackPanel
-                            Orientation="Horizontal"    
-                        >
-                            <ComboBox
-                                x:Name="webHookMethodBox"
-                                Margin="5"
-                                SelectedIndex="0"    
+                    <TabItem
+                        Visibility="Collapsed"    
+                    >
+                        <StackPanel>
+                            <StackPanel
+                                Orientation="Horizontal"    
                             >
-                                <ComboBoxItem
-                                    Content="GET"    
-                                />
-                                <ComboBoxItem
-                                    Content="POST"    
-                                />
-                                <ComboBoxItem
-                                    Content="PUT"    
-                                />
-                                <ComboBoxItem
-                                    Content="PATCH"    
-                                />
-                                <ComboBoxItem
-                                    Content="DELETE"    
-                                />
-                            </ComboBox>
-                            <TextBox
-                                x:Name="webHookBox"
-                                Margin="5"
-                                Width="250"    
-                            />
-                            <Button
-                                Margin="5"
-                                Content="Отправить"
-                                Width="100"
-                                Click="SendRequestHandler"
-                            />
-                        </StackPanel>
-                        <TabControl
-                            Margin="5"
-                        >
-                            <TabItem
-                                Header="Параметры"
-                            >
-                                <StackPanel>
-                                    <TextBlock
-                                        Text="Параметры запроса"    
+                                <ComboBox
+                                    x:Name="webHookMethodBox"
+                                    Margin="5"
+                                    SelectedIndex="0"    
+                                >
+                                    <ComboBoxItem
+                                        Content="GET"    
                                     />
+                                    <ComboBoxItem
+                                        Content="POST"    
+                                    />
+                                    <ComboBoxItem
+                                        Content="PUT"    
+                                    />
+                                    <ComboBoxItem
+                                        Content="PATCH"    
+                                    />
+                                    <ComboBoxItem
+                                        Content="DELETE"    
+                                    />
+                                </ComboBox>
+                                <TextBox
+                                    x:Name="webHookBox"
+                                    Margin="5"
+                                    Width="250"    
+                                />
+                                <Button
+                                    Margin="5"
+                                    Content="Отправить"
+                                    Width="100"
+                                    Click="SendRequestHandler"
+                                />
+                            </StackPanel>
+                            <TabControl
+                                Margin="5"
+                            >
+                                <TabItem
+                                    Header="Параметры"
+                                >
                                     <StackPanel>
+                                        <TextBlock
+                                            Text="Параметры запроса"    
+                                        />
+                                        <StackPanel>
+                                            <StackPanel
+                                                Orientation="Horizontal"    
+                                            >
+                                                <TextBlock
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                    Text="Ключ"
+                                                />
+                                                <TextBlock
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                    Text="Значение"
+                                                />
+                                            </StackPanel>
+                                        </StackPanel>
                                         <StackPanel
-                                            Orientation="Horizontal"    
+                                            x:Name="queryParams"    
                                         >
-                                            <TextBlock
-                                                Width="75"
-                                                Margin="35 5"
-                                                Text="Ключ"
-                                            />
-                                            <TextBlock
-                                                Width="75"
-                                                Margin="35 5"
-                                                Text="Значение"
-                                            />
+                                            <StackPanel
+                                                Orientation="Horizontal"    
+                                            >
+                                                <TextBox
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                    KeyUp="UpdateQueryParamsHandler"
+                                                />
+                                                <TextBox
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                    KeyUp="UpdateQueryParamsHandler"
+                                                />
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
-                                    <StackPanel
-                                        x:Name="queryParams"    
-                                    >
-                                        <StackPanel
-                                            Orientation="Horizontal"    
-                                        >
-                                            <TextBox
-                                                Width="75"
-                                                Margin="35 5"
-                                                KeyUp="UpdateQueryParamsHandler"
-                                            />
-                                            <TextBox
-                                                Width="75"
-                                                Margin="35 5"
-                                                KeyUp="UpdateQueryParamsHandler"
-                                            />
+                                </TabItem>
+                                <TabItem
+                                    Header="Заголовки"    
+                                >
+                                    <StackPanel>
+                                        <TextBlock
+                                            Text="Параметры запроса"    
+                                        />
+                                        <StackPanel>
+                                            <StackPanel
+                                                Orientation="Horizontal"    
+                                            >
+                                                <TextBlock
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                    Text="Ключ"
+                                                />
+                                                <TextBlock
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                    Text="Значение"
+                                                />
+                                            </StackPanel>
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <StackPanel
+                                                Orientation="Horizontal"    
+                                            >
+                                                <TextBlock
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                    Text="Authorization"
+                                                />
+                                                <TextBox
+                                                    x:Name="authorizationHeaderBox"
+                                                    Width="75"
+                                                    Margin="35 5"
+                                                />
+                                            </StackPanel>
                                         </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </TabItem>
-                        </TabControl>
-                        <TextBox
-                            x:Name="responseBox"
-                            Height="250"    
-                        />
-                    </StackPanel>
-                </TabItem>
-            </TabControl>
-        </StackPanel>
+                                </TabItem>
+                            </TabControl>
+                            <TabControl>
+                                <TabItem
+                                   Header="Тело ответа"    
+                                >
+                                    <TextBox
+                                        x:Name="responseBox"
+                                        Height="250"    
+                                    />
+                                </TabItem>
+                                <TabItem
+                                    x:Name="responseCookiesLabel"
+                                    Header="Куки"    
+                                >
+                                    <TextBox
+                                        x:Name="responseCookiesBox"
+                                        Height="250"    
+                                    />
+                                </TabItem>
+                                <TabItem
+                                    x:Name="responseHeadersLabel"
+                                    Header="Заголовки"    
+                                >
+                                    <TextBox
+                                        x:Name="responseHeadersBox"
+                                        Height="250"    
+                                    />
+                                </TabItem>
+                                <TabItem
+                                    IsEnabled="False"
+                                    Background="Transparent"
+                                    HorizontalAlignment="Right"
+                                    HorizontalContentAlignment="Right"
+                                >
+                                    <TabItem.Header>
+                                        <StackPanel
+                                            HorizontalAlignment="Right"
+                                            Orientation="Horizontal"
+                                        >
+                                            <materialDesign:PackIcon
+                                                Kind="World"    
+                                            />
+                                            <TextBlock
+                                                x:Name="statusCodeLabel"
+                                                Margin="25 0"
+                                                HorizontalAlignment="Right"
+                                                Text="200 OK"
+                                            />
+                                            <TextBlock
+                                                x:Name="performanceTimeLabel"
+                                                Margin="25 0"
+                                                HorizontalAlignment="Right"
+                                                Text="0 мс"
+                                            />
+                                            <TextBlock
+                                                x:Name="contentLengthLabel"
+                                                Margin="25 0"
+                                                HorizontalAlignment="Right"
+                                                Text="0 Б"
+                                            />
+                                        </StackPanel>
+                                    </TabItem.Header>
+                                </TabItem>
+                            </TabControl>
+                        </StackPanel>
+                    </TabItem>
+                </TabControl>
+            </StackPanel>
+        </ScrollViewer>
     </DockPanel>
 </Window>

@@ -28,6 +28,7 @@ namespace webbro
     {
 
         public SpeechSynthesizer debugger;
+        public double performanceTime = 0.0;
 
         public MainWindow()
         {
@@ -49,52 +50,102 @@ namespace webbro
 
         private void SendRequest()
         {
+
+            SetInterval(() =>
+            {
+                performanceTime += 0.1;
+            }, TimeSpan.FromSeconds(0.1));
             string webhookBoxContent = webHookBox.Text;
             int methodIndex = webHookMethodBox.SelectedIndex;
             ComboBoxItem selectedWebHookMethodBoxItem = ((ComboBoxItem)(webHookMethodBox.Items[methodIndex]));
             string method = ((string)(selectedWebHookMethodBoxItem.Content));
             // https://jsonplaceholder.typicode.com/posts/1
             string uriPath = webhookBoxContent;
-            var webRequest = HttpWebRequest.Create(uriPath);
-            webRequest.Method = method;
             try
             {
-                if (method != "GET")
+                HttpWebRequest webRequest = (HttpWebRequest)HttpWebRequest.Create(uriPath);
+                webRequest.Method = method;
+                webRequest.UserAgent = ".NET Framework Test Client";
+                string authorizationHeaderBoxContent = authorizationHeaderBox.Text;
+                webRequest.Headers["Authorization"] = authorizationHeaderBoxContent;
+                try
                 {
-                    StringBuilder postData = new StringBuilder();
-                    /*
-                    string title = "foo";
-                    string body = "bar";
-                    int userId = 1;
-                    postData.Append(HttpUtility.UrlEncode(String.Format("title={0}&", title)));
-                    postData.Append(HttpUtility.UrlEncode(String.Format("body={0}&", body)));
-                    postData.Append(HttpUtility.UrlEncode(String.Format("userId={0}", userId)));*/
-                    foreach (StackPanel queryParam in queryParams.Children)
+                    if (method != "GET")
                     {
-                        TextBox queryParamKey = ((TextBox)(queryParam.Children[0]));
-                        TextBox queryParamValue = ((TextBox)(queryParam.Children[1]));
-                        string queryParamKeyContent = queryParamKey.Text;
-                        string queryParamValueContent = queryParamValue.Text;
-                        postData.Append(HttpUtility.UrlEncode(String.Format(queryParamKeyContent + "={0}&", queryParamValueContent)));
+                        StringBuilder postData = new StringBuilder();
+                        foreach (StackPanel queryParam in queryParams.Children)
+                        {
+                            TextBox queryParamKey = ((TextBox)(queryParam.Children[0]));
+                            TextBox queryParamValue = ((TextBox)(queryParam.Children[1]));
+                            string queryParamKeyContent = queryParamKey.Text;
+                            string queryParamValueContent = queryParamValue.Text;
+                            postData.Append(HttpUtility.UrlEncode(String.Format(queryParamKeyContent + "={0}&", queryParamValueContent)));
+                        }
+                        Stream postStream = webRequest.GetRequestStream();
+                        postStream.Write(new byte[] { }, 0, 0);
                     }
-                    Stream postStream = webRequest.GetRequestStream();
-                    postStream.Write(new byte [] { }, 0, 0);
-                    debugger.Speak("postData: " + postData.ToString());
+                    using (HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse())
+                    {
+                        using (var reader = new StreamReader(webResponse.GetResponseStream()))
+                        {
+                            JavaScriptSerializer js = new JavaScriptSerializer();
+                            var objText = reader.ReadToEnd();
+                            responseBox.Text = objText;
+                            CookieCollection responseCookies = webResponse.Cookies;
+                            int countResponseCookies = responseCookies.Count;
+                            string rawCountResponseCookies = countResponseCookies.ToString();
+                            responseCookiesLabel.Header = "Куки (" + rawCountResponseCookies + ")";
+                            bool isCookiesExists = countResponseCookies >= 1;
+                            if (isCookiesExists)
+                            {
+                                responseCookiesBox.Text = responseCookies.ToString();
+                            }
+                            WebHeaderCollection responseHeaders = webResponse.Headers;
+                            int countResponseHeaders = responseHeaders.Count;
+                            string rawCountResponseHeaders = countResponseHeaders.ToString();
+                            responseHeadersLabel.Header = "Заголовки (" + rawCountResponseHeaders + ")";
+                            bool isHeadersExists = countResponseHeaders >= 1;
+                            if (isHeadersExists)
+                            {
+                                responseHeadersBox.Text = responseHeaders.ToString();
+                            }
+                            HttpStatusCode statusCode = webResponse.StatusCode;
+                            int numberStatusCode = ((int)(statusCode));
+                            string rawStatusCode = statusCode.ToString();
+                            string statusCodeLabelContent = numberStatusCode + " " + rawStatusCode;
+                            statusCodeLabel.Text = statusCodeLabelContent;
+                            long contentLength = webResponse.ContentLength;
+                            string measure = "Б";
+                            string rawContentLength = contentLength.ToString();
+                            if (contentLength / (1024 * 1024) >= 1)
+                            {
+                                measure = "Мб";
+                                rawContentLength = (contentLength / (1024 * 1024)).ToString();
+                            }
+                            else if (contentLength / (1024) >= 1)
+                            {
+                                measure = "Кб";
+                                rawContentLength = (contentLength / 1024).ToString();
+                            }
+                            string contentLengthLabelContent = rawContentLength + " " + measure;
+                            contentLengthLabel.Text = contentLengthLabelContent;
+                            string rawPerformanceTime = performanceTime.ToString("0.0");
+                            string performanceTimeLabelContent = rawPerformanceTime + " мс";
+                            performanceTimeLabel.Text = performanceTimeLabelContent;
+                        }
+                    }
                 }
-                using (var webResponse = webRequest.GetResponse())
+                catch (WebException)
                 {
-                    using (var reader = new StreamReader(webResponse.GetResponseStream()))
-                    {
-                        JavaScriptSerializer js = new JavaScriptSerializer();
-                        var objText = reader.ReadToEnd();
-                        responseBox.Text = objText;
-                    }
+                    debugger.Speak("Ошибка запроса");
+                    responseBox.Text = "Ошибка запроса";
                 }
             }
-            catch (WebException)
+            catch (UriFormatException)
             {
-                debugger.Speak("Ошибка запроса");
+                responseBox.Text = "Ошибка запроса";
             }
+            performanceTime = 0;
         }
 
         private void UpdateQueryParamsHandler(object sender, KeyEventArgs e)
@@ -148,6 +199,13 @@ namespace webbro
                     queryParams.Children.RemoveAt(index);
                 }
             }
+        }
+
+        public async Task SetInterval(Action action, TimeSpan timeout)
+        {
+            await Task.Delay(timeout).ConfigureAwait(false);
+            action();
+            SetInterval(action, timeout);
         }
 
     }
