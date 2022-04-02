@@ -1,0 +1,16 @@
+C:\wpf_projects\webbro\webbro\bin\Debug\webbro.exe.config
+C:\wpf_projects\webbro\webbro\bin\Debug\webbro.exe
+C:\wpf_projects\webbro\webbro\bin\Debug\webbro.pdb
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.csproj.SuggestedBindingRedirects.cache
+C:\wpf_projects\webbro\webbro\obj\Debug\MainWindow.g.cs
+C:\wpf_projects\webbro\webbro\obj\Debug\App.g.cs
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro_MarkupCompile.cache
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro_MarkupCompile.lref
+C:\wpf_projects\webbro\webbro\obj\Debug\MainWindow.baml
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.g.resources
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.Properties.Resources.resources
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.csproj.GenerateResource.cache
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.csproj.CoreCompileInputs.cache
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.exe
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.pdb
+C:\wpf_projects\webbro\webbro\obj\Debug\webbro.csproj.AssemblyReference.cache
